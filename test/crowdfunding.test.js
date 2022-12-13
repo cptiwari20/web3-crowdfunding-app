@@ -21,7 +21,7 @@ beforeEach(async () => {
         gas: '3000000'
     })
 
-    await factory.methods.createContract("0")
+    await factory.methods.createContract("100")
     .send({
         from: accounts[0],
         gas: '3000000',   
@@ -38,4 +38,31 @@ describe('CrowdfundFactory deploys', () => {
         assert.ok(factory.options.address)
         assert.ok(campaignContract.options.address)
     })
+
+    it('address 1 should be a manager', async () => {
+        const manager = await campaignContract.methods.manager().call();
+        assert.equal(manager, accounts[0])
+    })
+    it('allows other users to contribute and add as approvers', async() => {
+        const newAccountUser = accounts[1];
+        await campaignContract.methods.contribute().send({
+            from: newAccountUser,
+            value:"101"
+        });
+        const isContributer = await campaignContract.methods.approvers(newAccountUser).call();
+        assert.ok(isContributer);
+    })
+    it('should allow to have a minimum contribution', async () => {
+        try{
+            const newAccountUser = accounts[2];
+            await campaignContract.methods.contribute().send({
+                from: newAccountUser,
+                value: "50"
+            })
+            assert(false)
+        }catch(error) {
+            assert(error)
+        }
+    })
+    
 })
