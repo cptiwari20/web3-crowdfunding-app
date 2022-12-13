@@ -27,11 +27,10 @@ beforeEach(async () => {
         gas: '3000000',   
     })
 
-   // const getDeployedContracts = await factory.methods.getAllDeployedContract();
-   const getDeployedContracts = await factory.methods.getAllDeployedContract();
-  //paignContract = await new web3.eth.Contract(mainContractABI, getDeployedContracts[0])
-
-    console.log(getDeployedContracts.options.allDeployedContracts)
+   
+   const getDeployedContracts = await factory.methods.getAllDeployedContract().call();
+   campaignContractAddress = getDeployedContracts[0];
+   campaignContract = await new web3.eth.Contract(mainContractABI, getDeployedContracts[0])
 })
 
 describe('CrowdfundFactory deploys', () => {
