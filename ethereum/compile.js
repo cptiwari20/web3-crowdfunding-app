@@ -38,3 +38,4 @@ for(let contract in output){
         output[contract]
     )
 }
+console.log("The contract has been compiled successfully!")

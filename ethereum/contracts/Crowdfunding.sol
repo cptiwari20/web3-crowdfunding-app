@@ -48,7 +48,7 @@ contract Crowdfund {
     }
 
     function createRequest(string calldata _description, uint _value, address _recipient) public restricted{
-        Request storage newRequest = requests[requests.length + 1];
+        Request storage newRequest = requests.push();
         newRequest.description = _description;
         newRequest.value = _value;
         newRequest.recipient = _recipient;
