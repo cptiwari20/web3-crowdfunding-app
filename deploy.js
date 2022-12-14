@@ -3,7 +3,6 @@ const Web3 = require('web3');
 const { abi, evm } = require('./ethereum/build/CrowdfundFactory.json');
 require('dotenv').config();
 
-console.log(process.env.WALLET_SECRET_PHRASE)
 const provider = new HDWalletProvider(
     process.env.WALLET_SECRET_PHRASE,
     process.env.INFURA_API,
