@@ -66,14 +66,14 @@ describe('CrowdfundFactory deploys', () => {
     })
     it('should only allow manager to create a request', async () => {
         // try{
-            const description = 'Buy one AWS server subscription';
-            console.log(campaignContract.methods)
-            await campaignContract.methods
-            .createRequest(description, 1000, accounts[1])
-            .send({
-                from: accounts[0],
-                gas: "3000000"
-            })
+            // const description = 'Buy one AWS server subscription';
+            // console.log(campaignContract.methods)
+            // await campaignContract.methods
+            // .createRequest(description, 1000, accounts[1])
+            // .send({
+            //     from: accounts[0],
+            //     gas: "3000000"
+            // })
             // const request = await campaignContract.methods.requests(0).call();
             // console.log(request)
             // assert.equal(description, request.description)
@@ -81,6 +81,15 @@ describe('CrowdfundFactory deploys', () => {
         // }catch(err){
         //     console.log(err)
         // }
+        await campaignContract.methods
+        .createRequest("Buy batteries", "100", accounts[1])
+        .send({
+            from: accounts[0],
+            gas: "1000000",
+        });
+        const request = await campaignContract.methods.requests(0).call();
+    
+        assert.equal("Buy batteries", request.description);
 
     })
     

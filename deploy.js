@@ -1,10 +1,12 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const Web3 = require('web3');
 const { abi, evm } = require('./ethereum/build/CrowdfundFactory.json');
+require('dotenv').config();
 
+console.log(process.env.WALLET_SECRET_PHRASE)
 const provider = new HDWalletProvider(
-    'destroy believe price topple heavy rude come retreat exact chicken glad eye',
-    'https://goerli.infura.io/v3/f60949d9531543a5bd3989dc13f35d0c'
+    process.env.WALLET_SECRET_PHRASE,
+    process.env.INFURA_API,
 )
 
 const web3 = new Web3(provider);
