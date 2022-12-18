@@ -1,17 +1,22 @@
+import App from 'next/app';
 import React, { useEffect, useState } from 'react';
 import ContractFactory from '../factory';
 
-export default () => {
-    const [allCampaigns, setAllCampaigns] = useState([])
 
+
+const Home = (props) => {
+    const [allCampaigns, setAllCampaigns] = useState([])
+    console.log(props.campaigns)
     useEffect(() => {
-        fetchDataFromContractFactory()
+        // fetchDataFromContractFactory()
+        
+        
     }, [])
-    const fetchDataFromContractFactory = async () =>{
-        const campaigns = await ContractFactory.methods.getAllDeployedContract().call()
-        console.log(campaigns)
-        setAllCampaigns(campaigns)
-    }
+    // const fetchDataFromContractFactory = async () =>{
+    //     const campaigns = await ContractFactory.methods.getAllDeployedContract().call()
+    //     console.log(campaigns)
+    //     setAllCampaigns(campaigns)
+    // }
 
     return <>
         <h1>Welcome to the Crowdfunding app</h1>
@@ -20,3 +25,10 @@ export default () => {
         })} */}
         </>
 }
+
+Home.getInitialProps = async () => {
+    const campaigns = await ContractFactory.methods.getAllDeployedContract().call()
+    return {campaigns}
+}
+
+export default Home
