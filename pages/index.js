@@ -1,6 +1,8 @@
-import App from 'next/app';
 import React, { useEffect, useState } from 'react';
+import { Button, Card, Divider, Header, Segment } from 'semantic-ui-react';
+
 import ContractFactory from '../factory';
+import Layout from '../components/Layout';
 
 
 
@@ -12,17 +14,31 @@ const Home = (props) => {
         
         
     }, [])
-    // const fetchDataFromContractFactory = async () =>{
-    //     const campaigns = await ContractFactory.methods.getAllDeployedContract().call()
-    //     console.log(campaigns)
-    //     setAllCampaigns(campaigns)
-    // }
+    const renderCards = () => {
+       const items = props.campaigns.map(camp => {
+            return {
+                header: camp,
+                description: 'Know more..',
+                fluid: true
+            }
+        })
+        if (items.length) {
+            return <Card.Group items={items} />
+            
+        } else {
+            return <Segment>No Campaign Exists</Segment>
+        }
+    }
 
     return <>
-        <h1>Welcome to the Crowdfunding app</h1>
-        {/* {allCampaigns.map(camp => {
-            <h2>{"camp"}</h2>
-        })} */}
+        <Layout>
+            <Header as='h3'>All Campaigns</Header>
+            <Divider />
+            <Button  content='Create Campaign' icon='add circle' primary/>
+            
+            {renderCards()}
+
+        </Layout>
         </>
 }
 
