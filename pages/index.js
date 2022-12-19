@@ -7,13 +7,12 @@ import Layout from '../components/Layout';
 
 
 const Home = (props) => {
-    const [allCampaigns, setAllCampaigns] = useState([])
-    console.log(props.campaigns)
-    useEffect(() => {
-        // fetchDataFromContractFactory()
+    // const [allCampaigns, setAllCampaigns] = useState([])
+    // useEffect(() => {
+    //     // fetchDataFromContractFactory()
         
         
-    }, [])
+    // }, [])
     const renderCards = () => {
        const items = props.campaigns.map(camp => {
             return {
