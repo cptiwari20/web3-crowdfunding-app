@@ -3,10 +3,9 @@ import { Menu } from "semantic-ui-react"
 
 export default () => {
     return <Menu size='massive'>
-        <Menu.Item
-            name='Crowdfunding'
-           
-        />
+        <Menu.Item>
+            <Link href='/'>Crowdfunding</Link>
+        </Menu.Item>
         <Menu.Menu position={'right'}>
             <Menu.Item
                 name='Campaigns'

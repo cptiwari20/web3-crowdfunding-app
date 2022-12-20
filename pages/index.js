@@ -3,6 +3,7 @@ import { Button, Card, Divider, Header, Segment } from 'semantic-ui-react';
 
 import ContractFactory from '../factory';
 import Layout from '../components/Layout';
+import Link from 'next/link';
 
 
 
@@ -17,8 +18,12 @@ const Home = (props) => {
        const items = props.campaigns.map(camp => {
             return {
                 header: camp,
-                description: 'Know more..',
-                fluid: true
+                description: (
+                    <Link href={`campaign/${camp}`}>
+                    <p>More details</p>
+                    </Link>  
+                    ),
+                fluid: true,
             }
         })
         if (items.length) {
@@ -33,7 +38,9 @@ const Home = (props) => {
         <Layout>
             <Header as='h3'>All Campaigns</Header>
             <Divider />
-            <Button  content='Create Campaign' icon='add circle' primary/>
+            <Link href='/campaign/new'>
+                <Button  style={{marginBotton: '10px'}}  content='Create Campaign' icon='add circle' primary/>
+            </Link>
             
             {renderCards()}
 
