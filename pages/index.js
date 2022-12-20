@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Divider, Header, Segment } from 'semantic-ui-react';
 
-import ContractFactory from '../factory';
+import ContractFactory from '../ethereum/factory';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 

@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { Button, Form, Input, Loader, Message } from "semantic-ui-react"
 import Layout from "../../components/Layout"
-import web3 from "../../web3";
-import ContractFactory from '../../factory';
+import web3 from "../../ethereum/web3";
+import ContractFactory from '../../ethereum/factory';
 import { useRouter } from "next/router";
 
 const New = () => {

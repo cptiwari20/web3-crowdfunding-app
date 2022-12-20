@@ -2,9 +2,8 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router";
 import { Button, Form, Input, Loader, Message } from "semantic-ui-react"
 import Layout from "../../components/Layout"
-import web3 from "../../web3";
+import web3 from "../../ethereum/web3";
 const { abi: mainContractABI, evm: mainContractEVM } = require('../../ethereum/build/Crowdfund.json');
-import ContractFactory from '../../factory';
 
 const Campaign = () => {
     const [isLoading, setLoading] = useState(false);

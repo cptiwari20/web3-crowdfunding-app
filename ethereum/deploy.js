@@ -1,6 +1,6 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const Web3 = require('web3');
-const { abi, evm } = require('./ethereum/build/CrowdfundFactory.json');
+const { abi, evm } = require('./build/CrowdfundFactory.json');
 require('dotenv').config();
 
 const provider = new HDWalletProvider(
