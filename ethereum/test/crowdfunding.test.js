@@ -3,8 +3,8 @@ const ganache = require('ganache-cli');
 const Web3 = require('web3');
 const web3 = new Web3(ganache.provider());
  
-const { abi, evm } = require('../ethereum/build/CrowdfundFactory.json');
-const { abi: mainContractABI, evm: mainContractEVM } = require('../ethereum/build/Crowdfund.json');
+const { abi, evm } = require('../build/CrowdfundFactory.json');
+const { abi: mainContractABI, evm: mainContractEVM } = require('../build/Crowdfund.json');
 
 let accounts;
 let factory;

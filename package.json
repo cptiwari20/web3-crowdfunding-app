@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test",
+    "test": "mocha ethereum/test",
     "dev": "next dev",
     "compile-contract": "node ethereum/compile.js"
   },
