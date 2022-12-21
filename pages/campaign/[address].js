@@ -4,6 +4,7 @@ import { Button, Card, Form, Grid, Input, Loader, Message } from "semantic-ui-re
 import Layout from "../../components/Layout"
 import web3 from "../../ethereum/web3";
 import campaign from "../../ethereum/campaign";
+import ContibuteForm from "../../components/ContibuteForm";
 const { abi: mainContractABI, evm: mainContractEVM } = require('../../ethereum/build/Crowdfund.json');
 
 const Campaign = (props) => {
@@ -19,9 +20,9 @@ const Campaign = (props) => {
           styles: "text-wrap: word-wrap"
         },
         {
-          header: props.minimumContribution,
+          header: props.minimumContribution + ' Wei',
           description:
-            'Minimum contribution',
+            'Minimum contribution in Wei; equal to ' + web3.utils.fromWei(props.minimumContribution, 'ether') + ' Ether.',
           meta: 'This is the minimum amount required to contribute in this crowdfund campagin',
         },
         {
@@ -37,10 +38,10 @@ const Campaign = (props) => {
           meta: 'This is the total requests in this crowdfund campagin to send the money to',
         },
         {
-          header: props.balance,
+          header: props.balance + ' Wei',
           description:
             'Crowdfund Campaign Balance',
-          meta: 'This is the total amount in this crowdfund campagin',
+          meta: 'This is the total amount in this crowdfund campagin, equal to ' + web3.utils.fromWei(props.balance, 'ether') + ' Ether.',
         },
       ]
 
@@ -51,7 +52,7 @@ const Campaign = (props) => {
                 <Card.Group items={items} />
             </Grid.Row>
             <Grid.Row>
-                
+                <ContibuteForm {...props}/>
             </Grid.Row>
         </Grid>
 
@@ -69,7 +70,8 @@ Campaign.getInitialProps = async ({query}) => {
         minimumContribution: summary[1],
         totalRequests: summary[2],
         totalApprovers: summary[3],
-        balance: summary[4]
+        balance: summary[4],
+        address: campaign_address
     }
 
 }
