@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useRouter } from "next/router";
-import { Button, Grid, Label, List, Table } from "semantic-ui-react";
+import { Button, Grid, Label, List, Message, Segment, Table } from "semantic-ui-react";
 import Link from "next/link";
 import web3 from "../../../../ethereum/web3";
 import Layout from "../../../../components/Layout";
@@ -9,8 +9,47 @@ import campaign from "../../../../ethereum/campaign";
 const AllRequests = (props) => {
     const [isLoading, setLoading] = useState(false);
     const [errMsg, setErrMsg] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
     const router = useRouter()
-//    console.log(props)
+
+    const handleApprove = async (id) => {
+        setLoading(true)
+        setErrMsg('')
+        setSuccessMsg('')
+        try {
+            const accounts = await web3.eth.getAccounts();
+            const campaignContract = await campaign(props.campaign_address)
+            await campaignContract.methods.approveRequest(id).send({
+                from: accounts[0]
+            }) 
+            setSuccessMsg('Approved Successfully!')
+            setLoading(false)
+            router.reload()
+        } catch (error) {
+            setErrMsg(error.message)
+            setLoading(false)
+        }
+    }
+
+    const handleFinalize = async (id) => {
+        setLoading(true)
+        setErrMsg('')
+        setSuccessMsg('')
+        try {
+            const accounts = await web3.eth.getAccounts();
+            console.log(accounts)
+            const campaignContract = await campaign(props.campaign_address)
+            await campaignContract.methods.finalizeRequest(id).send({
+                from: accounts[0]
+            }) 
+            setSuccessMsg('Finalized Successfully!')
+            setLoading(false)
+            router.reload()
+        } catch (error) {
+            setErrMsg(error.message)
+            setLoading(false)
+        }
+    }
     return <Layout>
         <Grid columns='2'>
             <Grid.Row >
@@ -25,7 +64,8 @@ const AllRequests = (props) => {
                     </Link>
                 </Grid.Column>
             </Grid.Row>
-       
+    
+               
             <Grid.Row>
             <Table striped>
                 <Table.Header>
@@ -33,7 +73,6 @@ const AllRequests = (props) => {
                         <Table.HeaderCell>Number</Table.HeaderCell>
                         <Table.HeaderCell>Description</Table.HeaderCell>
                         <Table.HeaderCell>value</Table.HeaderCell>
-                        <Table.HeaderCell>Status</Table.HeaderCell>
                         <Table.HeaderCell>Recipent</Table.HeaderCell>
                         <Table.HeaderCell>Total Approvers</Table.HeaderCell>
                         <Table.HeaderCell>Actions</Table.HeaderCell>
@@ -41,17 +80,24 @@ const AllRequests = (props) => {
                 </Table.Header>
                 <Table.Body>
                     {props.requests.map((request, idx) => {
-                        return <Table.Row key={idx}>
+                         const readyToFinalise = request.approvalCount  >= (props.totalNumberOfApprovers / 2);
+                         const requestFulfilled = request.approvalCount  >= (props.totalNumberOfApprovers);
+                        return <Table.Row key={idx} disabled={request.complete} positive={!request.complete && readyToFinalise}>
                             <Table.Cell>{idx}</Table.Cell>
                             <Table.Cell>{request.description}</Table.Cell>
-                            <Table.Cell>{request.value}</Table.Cell>
-                            <Table.Cell>{request.complete}</Table.Cell>
+                            <Table.Cell>{web3.utils.fromWei(request.value, 'ether')} Ether</Table.Cell>
                             <Table.Cell>{request.recipient}</Table.Cell>
-                            <Table.Cell>{request.approvalCount}</Table.Cell>
+                            <Table.Cell>{request.approvalCount} / {props.totalNumberOfApprovers}</Table.Cell>
+                            <Table.Cell>
+                                {!request.complete && !requestFulfilled && <Button loading={!!isLoading} onClick={() => handleApprove(idx)} color='green'>Approve</Button>}
+                                {!!readyToFinalise && !request.complete && <Button loading={!!isLoading} onClick={() => handleFinalize(idx)} color='teal'>Finalize</Button>}
+                            </Table.Cell>
                         </Table.Row>
                     })}
                 </Table.Body>
             </Table>
+                {errMsg && <Message error header='Oops!!' content={errMsg} />}
+                { successMsg && <Message success header='Wohhoo!!' content={successMsg} />}
             </Grid.Row>
         </Grid>
     </Layout>
@@ -61,13 +107,15 @@ AllRequests.getInitialProps = async ({query}) => {
     const campaign_address = query.address;
     const campaignContract = await campaign(campaign_address)
     const totalNumberOfRequests = await campaignContract.methods.getRequestsCount().call();
+    const totalNumberOfApprovers = await campaignContract.methods.approversCount().call();
     const requests = [];
     for(let i = 0; i < totalNumberOfRequests; i++){
         const getRequest = await campaignContract.methods.requests(i).call();
         requests.push(getRequest);
     }
 
-    return {requests, campaign_address, totalNumberOfRequests}
+    console.log({totalNumberOfApprovers})
+    return {requests, campaign_address, totalNumberOfRequests, totalNumberOfApprovers}
 }
 
 export default AllRequests;
