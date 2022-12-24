@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router";
 import { Button, Card, Form, Grid, Input, Loader, Message } from "semantic-ui-react"
-import Layout from "../../components/Layout"
-import web3 from "../../ethereum/web3";
-import campaign from "../../ethereum/campaign";
-import ContibuteForm from "../../components/ContibuteForm";
-const { abi: mainContractABI, evm: mainContractEVM } = require('../../ethereum/build/Crowdfund.json');
+import Layout from "../../../components/Layout"
+import web3 from "../../../ethereum/web3";
+import campaign from "../../../ethereum/campaign";
+import ContibuteForm from "../../../components/ContibuteForm";
+import Link from "next/link";
+const { abi: mainContractABI, evm: mainContractEVM } = require('../../../ethereum/build/Crowdfund.json');
 
 const Campaign = (props) => {
     const [isLoading, setLoading] = useState(false);
@@ -57,7 +58,9 @@ const Campaign = (props) => {
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-
+                <Link href={`/campaign/${props.address}/requests`}>
+                    <Button >See all Requests</Button>
+                </Link>
             </Grid.Row>
         </Grid>
 
