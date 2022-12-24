@@ -13,11 +13,11 @@ const Campaign = (props) => {
 
     const items = [
         {
-          header: 'Manager',
+          header: props.manager,
           description:
-            props.manager,
+           'Address of Manager',
           meta: 'The adreess of the owner of this crowdfund campagin',
-          styles: "text-wrap: word-wrap"
+          style: {overflowWrap: "break-word"}
         },
         {
           header: props.minimumContribution + ' Wei',
@@ -47,12 +47,17 @@ const Campaign = (props) => {
 
     return <Layout>
         <h3>Campaign Detail</h3>
-        <Grid>
+        <Grid columns={3}>
             <Grid.Row>
-                <Card.Group items={items} />
+              <Grid.Column width={10}>
+                  <Card.Group items={items} />
+              </Grid.Column>
+              <Grid.Column>
+                  <ContibuteForm {...props}/>
+              </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-                <ContibuteForm {...props}/>
+
             </Grid.Row>
         </Grid>
 

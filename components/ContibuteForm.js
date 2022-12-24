@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Button, Form, Input, Message } from "semantic-ui-react";
 import campaign from "../ethereum/campaign";
@@ -8,7 +9,7 @@ export default (props) => {
     const [isLoading, setLoading] = useState(false);
     const [errMsg, setErrMsg] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-
+    const router = useRouter();
     const handleSubmit = async (e) =>{
         setLoading(true)
         setErrMsg('')
@@ -22,7 +23,7 @@ export default (props) => {
                 value: web3.utils.toWei(value, 'ether')
             })
             setLoading(false)
-            // router.push('/')
+            router.reload();
             setSuccessMessage('Contributed successfully!')
             
         } catch (error) {
